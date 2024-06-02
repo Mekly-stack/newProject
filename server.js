@@ -1,5 +1,12 @@
-const express = require('express');
-const path = require('path');
+// server.js
+import express from 'express';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -14,7 +21,6 @@ app.get('/booking', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'booking.html'));
 });
 
-// API endpoint for car repair shops
 app.get('/api/repair-shops', (req, res) => {
   const address = req.query.address;
   const shops = [
@@ -22,7 +28,6 @@ app.get('/api/repair-shops', (req, res) => {
     { id: 2, name: 'Repair Shop 2', location: 'City B' }
   ];
 
-  // Simulate matching logic
   const matchedShop = shops.find(shop => shop.location.toLowerCase() === address.toLowerCase());
 
   if (matchedShop) {
@@ -32,7 +37,6 @@ app.get('/api/repair-shops', (req, res) => {
   }
 });
 
-// Start the server
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });

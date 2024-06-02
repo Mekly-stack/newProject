@@ -1,13 +1,15 @@
 {
   "name": "mymechanic",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "A web application for car repair services",
+  "main": "server.js",
+  "type": "module",
   "scripts": {
+    "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:css": "tailwindcss -i ./src/styles.css -o ./public/styles.css"
   },
-  "keywords": [],
+  "keywords": ["car", "repair", "service", "webapp"],
   "author": "",
   "license": "ISC",
   "dependencies": {
