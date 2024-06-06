@@ -1180,6 +1180,18 @@ select {
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
 }
 
+.bg-\[url\(\'\/public\/images\/hero-bgr-4\.jpg\'\)\] {
+  background-image: url('/public/images/hero-bgr-4.jpg');
+}
+
+.bg-cover {
+  background-size: cover;
+}
+
+.bg-center {
+  background-position: center;
+}
+
 .fill-current {
   fill: currentColor;
 }
@@ -1482,20 +1494,6 @@ section h2 {
 
 section p, section li {
   margin-bottom: 1rem;
-}
-
-/* Hero Section Styling */
-
-.hero {
-  background-image: url('/public/images/hero-bgr-4.jpg');
-  background-size: cover;
-  background-position: center;
-  height: 100vh;
-}
-
-.hero-content {
-  padding: 2rem;
-  border-radius: 0.5rem;
 }
 
 /* FAQ Styling */

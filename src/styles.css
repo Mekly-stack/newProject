@@ -15,19 +15,6 @@ section p, section li {
   margin-bottom: 1rem;
 }
 
-/* Hero Section Styling */
-.hero {
-  background-image: url('/public/images/hero-bgr-4.jpg');
-  background-size: cover;
-  background-position: center;
-  height: 100vh;
-}
-
-.hero-content {
-
-  padding: 2rem;
-  border-radius: 0.5rem;
-}
 
 /* FAQ Styling */
 .faq-item h3 {
