@@ -781,10 +781,6 @@ select {
   inset: -1px;
 }
 
-.order-first {
-  order: -9999;
-}
-
 .col-span-full {
   grid-column: 1 / -1;
 }
@@ -862,10 +858,6 @@ select {
   display: grid;
 }
 
-.contents {
-  display: contents;
-}
-
 .hidden {
   display: none;
 }
@@ -918,10 +910,6 @@ select {
   width: 1.5rem;
 }
 
-.w-64 {
-  width: 16rem;
-}
-
 .w-96 {
   width: 24rem;
 }
@@ -940,6 +928,10 @@ select {
 
 .max-w-2xl {
   max-width: 42rem;
+}
+
+.max-w-5xl {
+  max-width: 64rem;
 }
 
 .max-w-7xl {
@@ -1076,10 +1068,6 @@ select {
 .divide-gray-300 > :not([hidden]) ~ :not([hidden]) {
   --tw-divide-opacity: 1;
   border-color: rgb(209 213 219 / var(--tw-divide-opacity));
-}
-
-.self-end {
-  align-self: flex-end;
 }
 
 .overflow-hidden {
@@ -1339,11 +1327,6 @@ select {
   line-height: 1.75rem;
 }
 
-.text-xs {
-  font-size: 0.75rem;
-  line-height: 1rem;
-}
-
 .font-black {
   font-weight: 900;
 }
@@ -1368,10 +1351,6 @@ select {
   line-height: 2.5rem;
 }
 
-.leading-5 {
-  line-height: 1.25rem;
-}
-
 .leading-6 {
   line-height: 1.5rem;
 }
@@ -1386,6 +1365,11 @@ select {
 
 .tracking-tight {
   letter-spacing: -0.025em;
+}
+
+.text-custom-violet {
+  --tw-text-opacity: 1;
+  color: rgb(139 92 246 / var(--tw-text-opacity));
 }
 
 .text-gray-200 {
@@ -1426,11 +1410,6 @@ select {
 .text-indigo-600 {
   --tw-text-opacity: 1;
   color: rgb(79 70 229 / var(--tw-text-opacity));
-}
-
-.text-violet-800 {
-  --tw-text-opacity: 1;
-  color: rgb(91 33 182 / var(--tw-text-opacity));
 }
 
 .text-white {
@@ -1785,10 +1764,6 @@ footer a:hover {
 }
 
 @media (min-width: 1024px) {
-  .lg\:col-span-2 {
-    grid-column: span 2 / span 2;
-  }
-
   .lg\:col-span-5 {
     grid-column: span 5 / span 5;
   }
@@ -1799,10 +1774,6 @@ footer a:hover {
 
   .lg\:col-end-1 {
     grid-column-end: 1;
-  }
-
-  .lg\:col-end-2 {
-    grid-column-end: 2;
   }
 
   .lg\:mx-0 {
@@ -1850,10 +1821,6 @@ footer a:hover {
     width: 83.333333%;
   }
 
-  .lg\:w-\[37rem\] {
-    width: 37rem;
-  }
-
   .lg\:w-auto {
     width: auto;
   }
@@ -1886,21 +1853,8 @@ footer a:hover {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
-  .lg\:items-start {
-    align-items: flex-start;
-  }
-
-  .lg\:justify-end {
-    justify-content: flex-end;
-  }
-
   .lg\:gap-8 {
     gap: 2rem;
-  }
-
-  .lg\:gap-x-8 {
-    -moz-column-gap: 2rem;
-         column-gap: 2rem;
   }
 
   .lg\:gap-y-8 {
@@ -1968,11 +1922,6 @@ footer a:hover {
   .dark\:text-gray-300 {
     --tw-text-opacity: 1;
     color: rgb(209 213 219 / var(--tw-text-opacity));
-  }
-
-  .dark\:text-violet-500 {
-    --tw-text-opacity: 1;
-    color: rgb(139 92 246 / var(--tw-text-opacity));
   }
 
   .dark\:text-white {

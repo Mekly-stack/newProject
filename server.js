@@ -1,8 +1,11 @@
-// server.js
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import dotenv from 'dotenv';
+
+// Load environment variables from .env file
+dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -35,6 +38,11 @@ app.get('/api/repair-shops', (req, res) => {
   } else {
     res.json({ success: false });
   }
+});
+
+// Endpoint to fetch the Google Maps API key
+app.get('/api/key', (req, res) => {
+  res.json({ apiKey: process.env.GOOGLE_MAPS_API_KEY });
 });
 
 app.listen(port, () => {
