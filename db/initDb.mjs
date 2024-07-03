@@ -3,7 +3,10 @@ import db from '../config/database.mjs';
 
 // Create tables
 db.serialize(() => {
-  // Example: Create a table for car repair services
+  // Drop the existing repair_shops table if it exists
+  db.run('DROP TABLE IF EXISTS repair_shops');
+
+  // Create services table
   db.run(`
     CREATE TABLE IF NOT EXISTS services (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -13,7 +16,7 @@ db.serialize(() => {
     )
   `);
 
-  // Example: Create a table for users
+  // Create users table
   db.run(`
     CREATE TABLE IF NOT EXISTS users (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -24,7 +27,7 @@ db.serialize(() => {
     )
   `);
 
-  // Example: Create a table for bookings
+  // Create bookings table
   db.run(`
     CREATE TABLE IF NOT EXISTS bookings (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -35,6 +38,20 @@ db.serialize(() => {
       status TEXT DEFAULT 'Pending',
       FOREIGN KEY (user_id) REFERENCES users(id),
       FOREIGN KEY (service_id) REFERENCES services(id)
+    )
+  `);
+
+  // Create repair shops table
+  db.run(`
+    CREATE TABLE IF NOT EXISTS repair_shops (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL,
+      address TEXT NOT NULL,
+      phone TEXT,
+      description TEXT,
+      latitude REAL,
+      longitude REAL,
+      opening_hours TEXT
     )
   `);
 

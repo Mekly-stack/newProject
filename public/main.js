@@ -1,126 +1,116 @@
 document.addEventListener('DOMContentLoaded', function() {
-  const searchForm = document.getElementById('search-form');
-  if (searchForm) {
-      searchForm.addEventListener('submit', function(event) {
-          event.preventDefault();
-          const address = document.getElementById('address').value;
-          fetch(`/api/repair-shops?address=${encodeURIComponent(address)}`)
-              .then(response => response.json())
-              .then(data => {
-                  if (data.success && data.shop) {
-                      window.location.href = `/booking.html?shopId=${data.shop.id}`;
-                  } else {
-                      alert('No repair shops available in your area.');
-                  }
-              })
-              .catch(error => console.error('Error:', error));
-      });
-  }
-
-  const steps = document.querySelectorAll('.form-step');
-  const nextStepButtons = document.querySelectorAll('.next-step');
-  const prevStepButtons = document.querySelectorAll('.prev-step');
-  let currentStep = 0;
+    const searchForm = document.getElementById('search-form');
+    const bookingForm = document.getElementById('bookingForm');
+    const notAvailable = document.getElementById('notAvailable');
+    let geocoder;
   
-  function showStep(step) {
-      steps.forEach((stepElement, index) => {
-          stepElement.classList.toggle('active', index === step);
-      });
-      updateButtons(step);
-  }
+    if (searchForm) {
+      searchForm.addEventListener('submit', async function(event) {
+        event.preventDefault();
+        const address = document.getElementById('address').value;
   
-  function updateButtons(step) {
-      if (step === 0) {
-          prevStepButtons.forEach(button => button.classList.add('hidden'));
-      } else {
-          prevStepButtons.forEach(button => button.classList.remove('hidden'));
+        if (!address) {
+          alert('Please enter an address or city.');
+          return;
+        }
+  
+        try {
+          const response = await fetch('http://localhost:3000/api/key');
+          const data = await response.json();
+          const apiKey = data.apiKey;
+  
+          geocodeAddress(apiKey, address);
+        } catch (error) {
+          console.error('Error fetching API key:', error);
+        }
+      });
+    }
+  
+    async function geocodeAddress(apiKey, address) {
+      try {
+        const geocodeResponse = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${apiKey}`);
+        const geocodeData = await geocodeResponse.json();
+  
+        if (geocodeData.status === 'OK' && geocodeData.results.length > 0) {
+          const location = geocodeData.results[0].geometry.location;
+          checkForNearbyShops(location.lat, location.lng);
+        } else {
+          alert('Geocode was not successful. Please check the address and try again.');
+        }
+      } catch (error) {
+        console.error('Error geocoding address:', error);
       }
-      if (step === steps.length - 1) {
-          nextStepButtons.forEach(button => button.classList.add('hidden'));
-      } else {
-          nextStepButtons.forEach(button => button.classList.remove('hidden'));
-      }
-  }
+    }
   
-  nextStepButtons.forEach(button => {
-      button.addEventListener('click', () => {
-          if (currentStep < steps.length - 1) {
-              currentStep++;
-              showStep(currentStep);
-          }
-      });
-  });
+    async function checkForNearbyShops(lat, lng) {
+      try {
+        const response = await fetch(`http://localhost:3000/api/repair-shops?lat=${lat}&lng=${lng}`);
+        const data = await response.json();
   
-  prevStepButtons.forEach(button => {
-      button.addEventListener('click', () => {
-          if (currentStep > 0) {
-              currentStep--;
-              showStep(currentStep);
-          }
-      });
-  });
-  
-  showStep(currentStep);
-
-  let map;
-  let geocoder;
-
-  async function initMap() {
-      const response = await fetch('/api/key');
-      const data = await response.json();
-      const apiKey = data.apiKey;
-
-      const script = document.createElement('script');
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&callback=loadMap`;
-      script.async = true;
-      document.head.appendChild(script);
-  }
-
-  function loadMap() {
-      map = new google.maps.Map(document.getElementById("map"), {
-          center: { lat: 59.3293, lng: 18.0686 },
-          zoom: 10,
-      });
-      geocoder = new google.maps.Geocoder();
-  }
-
-  function checkLocation() {
-      const locationInput = document.getElementById('locationInput').value.toLowerCase().trim();
-      const bookingForm = document.getElementById('bookingForm');
-      const notAvailable = document.getElementById('notAvailable');
-
-      if (locationInput === 'stockholm') {
+        if (data.success && data.shops.length > 0) {
           bookingForm.classList.remove('hidden');
           notAvailable.classList.add('hidden');
-          geocodeAddress('Stockholm');
-      } else {
+          // Populate the booking form with data if needed
+        } else {
           bookingForm.classList.add('hidden');
           notAvailable.classList.remove('hidden');
-          geocodeAddress(locationInput);
+          alert('No repair shops available in your area.');
+        }
+      } catch (error) {
+        console.error('Error checking for nearby shops:', error);
       }
-  }
-
-  function geocodeAddress(address) {
-      geocoder.geocode({ address: address }, (results, status) => {
-          if (status === 'OK') {
-              map.setCenter(results[0].geometry.location);
-              new google.maps.Marker({
-                  map: map,
-                  position: results[0].geometry.location,
-              });
-          } else {
-              alert('Geocode was not successful for the following reason: ' + status);
-          }
+    }
+  
+    const steps = document.querySelectorAll('.form-step');
+    const nextStepButtons = document.querySelectorAll('.next-step');
+    const prevStepButtons = document.querySelectorAll('.prev-step');
+    let currentStep = 0;
+  
+    function showStep(step) {
+      steps.forEach((stepElement, index) => {
+        stepElement.classList.toggle('active', index === step);
       });
-  }
-
-  initMap();
-
-  const faqItems = document.querySelectorAll('.faq-item h3');
-  faqItems.forEach(item => {
+      updateButtons(step);
+    }
+  
+    function updateButtons(step) {
+      if (step === 0) {
+        prevStepButtons.forEach(button => button.classList.add('hidden'));
+      } else {
+        prevStepButtons.forEach(button => button.classList.remove('hidden'));
+      }
+      if (step === steps.length - 1) {
+        nextStepButtons.forEach(button => button.classList.add('hidden'));
+      } else {
+        nextStepButtons.forEach(button => button.classList.remove('hidden'));
+      }
+    }
+  
+    nextStepButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        if (currentStep < steps.length - 1) {
+          currentStep++;
+          showStep(currentStep);
+        }
+      });
+    });
+  
+    prevStepButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        if (currentStep > 0) {
+          currentStep--;
+          showStep(currentStep);
+        }
+      });
+    });
+  
+    showStep(currentStep);
+  
+    const faqItems = document.querySelectorAll('.faq-item h3');
+    faqItems.forEach(item => {
       item.addEventListener('click', () => {
-          const answer = item.nextElementSibling;
-          answer.classList.toggle('hidden');
+        const answer = item.nextElementSibling;
+        answer.classList.toggle('hidden');
       });
+    });
   });
-});
