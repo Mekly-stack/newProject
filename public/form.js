@@ -68,8 +68,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function generateSummary() {
         const formData = new FormData(form);
+        const selectedServices = formData.getAll('service-type').join(', ');
         summaryContent.innerHTML = `
-            <p><strong>Service:</strong> ${formData.get('service-type')}</p>
+            <p><strong>Services:</strong> ${selectedServices}</p>
             <p><strong>Reg.nr:</strong> ${formData.get('Reg-nummer')}</p>
             <p><strong>Namn:</strong> ${formData.get('name')}</p>
             <p><strong>Email:</strong> ${formData.get('email')}</p>
@@ -102,6 +103,22 @@ document.addEventListener('DOMContentLoaded', function() {
 
         selectedTimeSlotsInput.value = selectedSlots.join(',');
     }
+
+    // Service Selection
+    const serviceLabels = document.querySelectorAll('label.service-option');
+    const serviceInputs = document.querySelectorAll('input[name="service-type"]');
+
+    serviceInputs.forEach((input) => {
+        input.addEventListener('change', function() {
+            serviceLabels.forEach((label) => {
+                if (label.querySelector('input').checked) {
+                    label.classList.add('ring-2', 'ring-indigo-500', 'border-indigo-500');
+                } else {
+                    label.classList.remove('ring-2', 'ring-indigo-500', 'border-indigo-500');
+                }
+            });
+        });
+    });
 
     // Initial step display
     showStep(currentStep);

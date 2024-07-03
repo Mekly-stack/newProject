@@ -1,5 +1,0 @@
-# Environment variables
-.env
-
-# Database files
-database/*.db
