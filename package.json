@@ -23,7 +23,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
-    "flowbite": "^2.3.0",
+    "flowbite": "^2.4.1",
     "postcss": "^8.4.38",
     "sqlite3": "^5.1.7",
     "tailwindcss": "^3.4.3"

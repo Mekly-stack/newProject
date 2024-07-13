@@ -4,6 +4,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const nextBtns = Array.from(document.querySelectorAll('.next-step'));
     const prevBtns = Array.from(document.querySelectorAll('.prev-step'));
     const summaryContent = document.getElementById('summary-content');
+    const timeSlots = document.querySelectorAll('.time-slot');
+    const selectedTimeSlotsInput = document.getElementById('selected-time-slots');
 
     let currentStep = 0;
 
@@ -79,30 +81,25 @@ document.addEventListener('DOMContentLoaded', function() {
             <p><strong>Ort:</strong> ${formData.get('city')}</p>
             <p><strong>Postnummer:</strong> ${formData.get('region')}</p>
             <p><strong>Datum:</strong> ${formData.get('date')}</p>
-            <p><strong>Valda tidsslotter:</strong> ${formData.get('selected-time-slots')}</p>
+            <p><strong>Vald tid:</strong> ${formData.get('selected-time-slots')}</p>
         `;
     }
 
     // Time Slot Selection
-    const timeSlots = document.querySelectorAll('.time-slot');
-    const selectedTimeSlotsInput = document.getElementById('selected-time-slots');
-
-    timeSlots.forEach(slot => {
-        slot.addEventListener('click', function() {
-            this.classList.toggle('bg-indigo-600');
-            this.classList.toggle('text-white');
-
-            updateSelectedTimeSlots();
+    document.querySelectorAll('.time-slot').forEach(slot => {
+        slot.addEventListener('click', () => {
+          slot.classList.toggle('time-slot-selected');
+          updateSelectedTimeSlots();
         });
-    });
-
-    function updateSelectedTimeSlots() {
-        const selectedSlots = Array.from(timeSlots)
-            .filter(slot => slot.classList.contains('bg-indigo-600'))
-            .map(slot => slot.getAttribute('data-time'));
-
-        selectedTimeSlotsInput.value = selectedSlots.join(',');
-    }
+      });
+      
+      function updateSelectedTimeSlots() {
+        const selectedSlots = [];
+        document.querySelectorAll('.time-slot-selected').forEach(slot => {
+          selectedSlots.push(slot.getAttribute('data-time'));
+        });
+        document.getElementById('selected-time-slots').value = selectedSlots.join(',');
+      }
 
     // Service Selection
     const serviceLabels = document.querySelectorAll('label.service-option');

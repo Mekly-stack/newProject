@@ -15,6 +15,16 @@ section p, section li {
   margin-bottom: 1rem;
 }
 
+/* Time slots */
+
+.time-slot-selected {
+  background-color: #4f46e5;
+  color: #fff;
+  border-color: #4f46e5;
+}
+
+
+
 /* FAQ Styling */
 .faq-item h3 {
   cursor: pointer;
