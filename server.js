@@ -18,14 +18,16 @@ const port = process.env.PORT || 3000;
 
 app.use(cors()); // Use CORS middleware
 app.use(express.json());
-app.use(express.static('public'));
+
+// Serve static files from the root directory (since files are now in the root)
+app.use(express.static(__dirname)); // Adjusted to serve the root directory
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.sendFile(path.join(__dirname, 'index.html')); // Adjusted to root
 });
 
 app.get('/booking', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'booking.html'));
+  res.sendFile(path.join(__dirname, 'booking.html')); // Adjusted to root
 });
 
 // Use the repair shops router
