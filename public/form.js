@@ -1,3 +1,12 @@
+// Define closeModal and openModal functions globally or within the appropriate scope
+function closeModal() {
+    document.getElementById('submission-modal').classList.add('hidden');
+}
+
+function openModal() {
+    document.getElementById('submission-modal').classList.remove('hidden');
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('multi-step-form');
     const steps = Array.from(document.querySelectorAll('.form-step'));
@@ -9,6 +18,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let currentStep = 0;
 
+    // Add event listener to the close button
+    document.getElementById('close-modal-button').addEventListener('click', closeModal);
+
     function showStep(step) {
         steps.forEach((element, index) => {
             element.classList.toggle('hidden', index !== step);
@@ -18,8 +30,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function updateNavigation(step) {
         document.querySelectorAll('nav ol li').forEach((li, index) => {
-            li.classList.toggle('bg-indigo-600', index === step);
-            li.classList.toggle('text-white', index === step);
+            const stepCircle = li.querySelector('span:first-child');
+            const stepLabel = li.querySelector('span:last-child');
+            const connector = li.querySelector('div');
+            
+            if (index <= step) {
+                stepCircle.classList.add('bg-white', 'text-white');
+                stepCircle.classList.remove('bg-white', 'border', 'border-gray-300', 'text-gray-500');
+                stepLabel.classList.add('text-indigo-600');
+                stepLabel.classList.remove('text-gray-500');
+                if (connector) connector.classList.add('bg-indigo-600');
+            } else {
+                stepCircle.classList.remove('bg-indigo-600', 'text-white');
+                stepCircle.classList.add('bg-white', 'border', 'border-gray-300', 'text-gray-500');
+                stepLabel.classList.remove('text-indigo-600');
+                stepLabel.classList.add('text-gray-500');
+                if (connector) connector.classList.remove('bg-indigo-600');
+            }
         });
     }
 
@@ -49,8 +76,8 @@ document.addEventListener('DOMContentLoaded', function() {
     form.addEventListener('submit', (event) => {
         event.preventDefault();
         if (validateStep(currentStep)) {
-            alert('Form submitted successfully!');
-            // Add additional logic here to handle the form data
+            openModal(); // Open modal on form submit
+            // Add additional logic here to handle the form data, e.g., sending it to the server
         }
     });
 
@@ -88,18 +115,18 @@ document.addEventListener('DOMContentLoaded', function() {
     // Time Slot Selection
     document.querySelectorAll('.time-slot').forEach(slot => {
         slot.addEventListener('click', () => {
-          slot.classList.toggle('time-slot-selected');
-          updateSelectedTimeSlots();
+            slot.classList.toggle('time-slot-selected');
+            updateSelectedTimeSlots();
         });
-      });
-      
-      function updateSelectedTimeSlots() {
+    });
+    
+    function updateSelectedTimeSlots() {
         const selectedSlots = [];
         document.querySelectorAll('.time-slot-selected').forEach(slot => {
-          selectedSlots.push(slot.getAttribute('data-time'));
+            selectedSlots.push(slot.getAttribute('data-time'));
         });
         document.getElementById('selected-time-slots').value = selectedSlots.join(',');
-      }
+    }
 
     // Service Selection
     const serviceLabels = document.querySelectorAll('label.service-option');
